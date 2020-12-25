@@ -1,0 +1,165 @@
+I. Dataset description:
+	Total number of images: 90380 images.
+	Training set size: 131 fruits with 67692 images.
+	Test set size: 131 fruits with 22688 images.
+	Number of classes: 131 (fruits and vegetables).
+	Image size: 100x100 pixels.
+	
+Built CNN from scatch - structure:
+Model: "sequential_10"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_34 (Conv2D)           (None, 100, 100, 16)      208       
+_________________________________________________________________
+activation_20 (Activation)   (None, 100, 100, 16)      0         
+_________________________________________________________________
+max_pooling2d_34 (MaxPooling (None, 50, 50, 16)        0         
+_________________________________________________________________
+conv2d_35 (Conv2D)           (None, 50, 50, 32)        2080      
+_________________________________________________________________
+max_pooling2d_35 (MaxPooling (None, 25, 25, 32)        0         
+_________________________________________________________________
+conv2d_36 (Conv2D)           (None, 25, 25, 64)        8256      
+_________________________________________________________________
+max_pooling2d_36 (MaxPooling (None, 12, 12, 64)        0         
+_________________________________________________________________
+conv2d_37 (Conv2D)           (None, 12, 12, 128)       32896     
+_________________________________________________________________
+max_pooling2d_37 (MaxPooling (None, 6, 6, 128)         0         
+_________________________________________________________________
+dropout_20 (Dropout)         (None, 6, 6, 128)         0         
+_________________________________________________________________
+flatten_10 (Flatten)         (None, 4608)              0         
+_________________________________________________________________
+dense_20 (Dense)             (None, 150)               691350    
+_________________________________________________________________
+activation_21 (Activation)   (None, 150)               0         
+_________________________________________________________________
+dropout_21 (Dropout)         (None, 150)               0         
+_________________________________________________________________
+dense_21 (Dense)             (None, 131)               19781     
+=================================================================
+Total params: 754,571
+Trainable params: 754,571
+Non-trainable params: 0
+
+
+
+Using Transfer learning - VGG16 - structure:
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+vgg16 (Functional)           (None, 3, 3, 512)         14714688  
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 3, 3, 1024)        4719616   
+_________________________________________________________________
+activation_2 (Activation)    (None, 3, 3, 1024)        0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 1, 1, 1024)        0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 1, 1, 1024)        0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 1024)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 150)               153750    
+_________________________________________________________________
+activation_3 (Activation)    (None, 150)               0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 150)               0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 131)               19781     
+=================================================================
+Total params: 19,607,835
+Trainable params: 4,893,147
+Non-trainable params: 14,714,688
+
+
+
+
+
+II. Training and Testing
+	1. Built CNN from scatch
+		a. train:val = 7:3, Adam - learning rate = default = 0.001, batch_size = 128, epochs = 20
+			loss: 0.0477 
+			accuracy: 0.9835 
+			val_loss: 3.3326e-04 
+			val_accuracy: 0.9999 
+			**Training time: 141s
+			**Using test data - accuracy: 0.9832069873809814
+		
+		b. train:val = 7:3, Adam - learning rate = 0.003, batch_size = 128, epochs = 20
+			loss: 0.0603
+			accuracy: 0.9801
+			val_loss: 0.0049
+			val_accuracy: 0.9981
+			**Training time: 141s
+			**Using test data - accuracy: 0.9752292037010193
+		
+		c. train:val = 7:3, Adam - learning rate = 0.01, batch_size = 128, epochs = 20
+			loss: 0.6178 
+			accuracy: 0.7997
+			val_loss: 0.1049
+			val_accuracy: 0.9718
+			**Training time: 141s
+			**Using test data - accuracy: 0.8975229263305664
+		
+		d. train:val = 7:3, Adam - learning rate = 0.0001, batch_size = 128, epochs = 20
+			loss: 0.0912
+			accuracy: 0.9702
+			val_loss: 0.0057
+			val_accuracy: 0.9990
+			**Training time: 141s
+			**Using test data - accuracy: 0.9590973258018494
+		
+		e. train:val = 7:3, Adam - learning rate = 0.0001, batch_size = 128, epochs = 50
+			loss: 0.0151
+			accuracy: 0.9951
+			val_loss: 3.2043e-04
+			val_accuracy: 0.9999
+			**Training time: 357s
+			**Using test data - accuracy: 0.9762870073318481
+		
+
+		
+	2. Using Transfer learning - VGG16
+		a. train:val = 7:3, Adam - learning rate = default = 0.001, batch_size = 128, epochs = 20
+			loss: 0.0365
+			accuracy: 0.9878
+			val_loss: 0.0012
+			val_accuracy: 0.9997
+			**Training time: 601s
+			**Using test data - accuracy: 0.963989794254303
+		
+		b. train:val = 7:3, Adam - learning rate = 0.003, batch_size = 128, epochs = 20
+			loss: 0.1554
+			accuracy: 0.9621 
+			val_loss: 0.0038 
+			val_accuracy: 0.9987
+			**Training time: 31+30x19s
+			**Using test data - accuracy: 0.9402326941490173
+		
+		c. train:val = 7:3, Adam - learning rate = 0.01, batch_size = 128, epochs = 20
+			loss: 1.0556
+			accuracy: 0.7454
+			val_loss: 0.2317
+			val_accuracy: 0.9468
+			**Training time: 31x5+30x15
+			**Using test data - accuracy: 0.8526974320411682
+		
+		d. train:val = 7:3, Adam - learning rate = 0.0001, batch_size = 128, epochs = 20
+			loss: 0.0147 
+			accuracy: 0.9978 
+			val_loss: 7.2187e-04
+			val_accuracy: 1.0000
+			**Training time: 39+30x19
+			**Using test data - accuracy: 0.9650917053222656
+		
+		e. train:val = 7:3, Adam - learning rate = 0.0001, batch_size = 128, epochs = 50
+			loss: 0.0037
+			accuracy: 0.9992
+			val_loss: 1.4069e-04
+			val_accuracy: 1.0000
+			**Training time: 39+30x49
+			**Using test data - accuracy: 0.976815938949585
